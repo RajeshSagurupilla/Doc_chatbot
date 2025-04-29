@@ -1,5 +1,5 @@
 import pandas as pd
-import pdfplumber
+from PyPDF2 import PdfReader
 from docx import Document
 import io
 
@@ -21,13 +21,13 @@ def extract_file_content(filename: str, content: bytes) -> str:
 
 def extract_pdf(content: bytes) -> str:
     text = ""
-    with pdfplumber.open(io.BytesIO(content)) as pdf:
-        for i, page in enumerate(pdf.pages):
-            page_text = page.extract_text()
-            if page_text:
-                text += page_text + "\n"
-            else:
-                text += f"[Page {i+1} has no extractable text]\n"
+    reader = PdfReader(io.BytesIO(content))
+    for i, page in enumerate(reader.pages):
+        page_text = page.extract_text()
+        if page_text:
+            text += page_text + "\n"
+        else:
+            text += f"[Page {i+1} has no extractable text]\n"
     return text.strip()
 
 
