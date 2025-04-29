@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from app.routes import upload
+from app import routes
 
 app = FastAPI()
 
-app.include_router(upload.router, prefix="/upload", tags=["Upload"])
+app.include_router(routes.router, tags=["DocChatbot"])
 
 if __name__ == "__main__":
     import uvicorn
